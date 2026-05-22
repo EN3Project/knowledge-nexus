@@ -25,7 +25,7 @@
 
 2. **Phase 2: Investigation (@investigator)**
    - Phase 1 で不足している情報を外部 Web から収集する。
-   - 複数ソースを参照し、ソース URL を記録する。
+   - 複数ソースを参照し、ソース URL を必ず記録する（最低3件）。
 
 3. **Phase 3: Analysis (@analyst)**
    - 既存知識（Phase 1）と外部情報（Phase 2）を統合し、構造化する。
@@ -40,6 +40,7 @@
    - Obsidian 互換 Markdown で整形し、`index/03_Resources/` 配下に保存する。
    - Permanent Note 相当の重要度なら `index/03_Resources/Permanent/` に配置する。
    - フロントマターに `note_type`, `tags`, `source` を記載する。
+   - **必須: ノート末尾に `## 裏付け資料` セクションを設け、Phase 2 で収集したソース URL をすべて記載すること。** カテゴリ別に整理するとなお良い。裏付けなしの知見は ⚠️ を付けて明示する。
 
 ---
 

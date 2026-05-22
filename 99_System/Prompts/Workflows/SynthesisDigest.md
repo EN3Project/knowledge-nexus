@@ -49,6 +49,7 @@
    - 保存先: `index/99_System/Reports/YYYY-MM-DD-synthesis-digest.md`
    - frontmatter: `type: synthesis-digest`, `status: pending-review`
    - VaultIndex.md の更新は不要（Reports は索引対象外）
+   - **必須: 各洞察・パターンの根拠となるノートへの `[[wikilink]]` を明示すること。** 根拠ノートが存在しない主張には ⚠️ を付ける。
 
 ---
 
