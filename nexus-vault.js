@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 /**
  * Nexus Vault MCP Server (HTTP mode)
+ * Copyright (c) 2026 EN3Project — MIT License with Commons Clause + Attribution Condition
+ * https://github.com/EN3Project/knowledge-nexus
+ *
  * Vault (Obsidian/Markdown) へのアクセスを MCP HTTP プロトコルで提供する。
  * Claude / Gemini / Codex など MCP 対応の任意の LLM から利用可能。
  *

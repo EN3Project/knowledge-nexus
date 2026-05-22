@@ -191,4 +191,10 @@ Knowledge Nexus の核となるエンジン。LLM と Vault を MCP プロトコ
 
 ## ライセンス
 
-MIT
+**MIT License with Commons Clause + Attribution Condition**
+
+- 個人利用・改変・非商用配布は自由
+- **商用利用（販売・有償ホスティング・有償サポート等）は禁止**
+- 派生物・フォークには `"Based on Knowledge Nexus by EN3Project"` の表示が必要
+
+詳細は [LICENSE](./LICENSE) を参照してください。
