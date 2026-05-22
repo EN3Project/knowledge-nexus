@@ -152,16 +152,44 @@ node 99_System/Scripts/rebuild_vault_index.js
 
 ---
 
-## 主要コマンド
+## コマンドリスト
+
+詳細仕様は [`99_System/Prompts/Protocols/CommandProtocol.md`](./99_System/Prompts/Protocols/CommandProtocol.md) を参照。
+
+### 起動
 
 | コマンド | 説明 |
 |----------|------|
-| `run` / `load` | Nexus を起動。記憶と人格を復元する |
-| `standardresearch` | 5フェーズ調査ワークフローを実行 |
-| `synthesize` | Vault を横断合成。洞察・知識ギャップを抽出 |
-| `weekly-maintenance` | 週次メンテナンスをまとめて実行 |
-| `crystallize` | 重要な決定・知識を長期記憶として保存 |
-| `rebuild-index` | VaultIndex.md を再生成 |
+| `run` / `load` | Nexus を起動。記憶・人格を復元し、未処理 Clippings や週次メンテナンスの要否を確認する |
+
+### 調査・処理
+
+| コマンド | 説明 |
+|----------|------|
+| `standardresearch` | 5フェーズ調査ワークフローを実行（Retrieval → Investigation → Analysis → Review → Output） |
+| `synthesize` | Vault を横断合成。洞察ベスト3・横断パターン・知識ギャップを抽出してダイジェストを生成 |
+| `process-clippings` | `index/Clippings/` の未処理ファイルを知識ノートに変換し、Archive に移動する |
+
+### 記憶管理
+
+| コマンド | 説明 |
+|----------|------|
+| `crystallize` / `結晶化` | 重要な決定・知識・ユーザー嗜好を長期記憶として保存する |
+| `condense` / `圧縮` | 長い会話を別 LLM へ引き継げる短い要約に圧縮する（ファイル保存なし） |
+| `handoff` / `引き継ぎ` | 短期作業文脈を `99_System/Handoff/CURRENT_CONTEXT.md` に保存する |
+| `clear-handoff` / `引き継ぎ破棄` | `CURRENT_CONTEXT.md` を削除する |
+| `prune-memory` / `記憶整理` | Memory の重複・陳腐化・矛盾を検出・整理する |
+| `promote-memory` / `記憶昇格` | セッション記憶から Permanent Notes に昇格すべき知識を提案する |
+
+### メンテナンス
+
+| コマンド | 説明 |
+|----------|------|
+| `weekly-maintenance` / `週次メンテナンス` | task-audit → review-system → prune-memory → synthesize → rebuild-index を一括実行 |
+| `review-system` / `システム点検` | コアファイルの整合性を点検する |
+| `task-audit` / `宿題棚卸し` | Open Tasks を棚卸しし、完了・重複・陳腐化を整理する |
+| `mark-reviewed` / `既読` | `pending-review` 状態のレポートを既読にする |
+| `rebuild-index` / `インデックス再生成` | `VaultIndex.md` を再生成する |
 
 ---
 
