@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1200, initial-scale=1">
+  <title>Knowledge Nexus Card 04</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-card: #111827;
+      --bg-card-hover: #1a2333;
+      --accent-purple: #6c63ff;
+      --accent-cyan: #00d4ff;
+      --accent-gold: #f5c56b;
+      --text-primary: #f0f4ff;
+      --text-muted: #8892a4;
+      --border: #1e2d40;
+      --glow-purple: rgba(108, 99, 255, 0.3);
+      --glow-cyan: rgba(0, 212, 255, 0.3);
+      --glow-gold: rgba(245, 197, 107, 0.22);
+      --max-width: 1120px;
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      width: 1200px;
+      height: 1200px;
+      overflow: hidden;
+      margin: 0;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      font-family: "Noto Sans JP", system-ui, sans-serif;
+      line-height: 1.7;
+    }
+
+    .card {
+      position: relative;
+      width: 1200px;
+      height: 1200px;
+      padding: 60px;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at 18% 14%, var(--glow-purple), transparent 25rem),
+        radial-gradient(circle at 82% 80%, var(--glow-cyan), transparent 28rem),
+        var(--bg-primary);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 72%);
+      pointer-events: none;
+    }
+
+    .content {
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .inner {
+      display: grid;
+      justify-items: center;
+      gap: 26px;
+    }
+
+    .character {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+      animation: float 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 24px var(--glow-cyan)) drop-shadow(0 10px 28px rgba(0, 0, 0, 0.45));
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Inter", "Noto Sans JP", system-ui, sans-serif;
+      font-size: 88px;
+      line-height: 1.12;
+      font-weight: 700;
+      letter-spacing: 0;
+      background: linear-gradient(110deg, var(--accent-purple), var(--accent-cyan));
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: gradientShift 4s ease infinite;
+    }
+
+    .code-block {
+      width: 720px;
+      margin: 14px 0 6px;
+      padding: 24px 40px;
+      border: 1px solid var(--accent-cyan);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent), var(--bg-card);
+      color: var(--accent-cyan);
+      font: 700 44px/1.45 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      text-align: left;
+      box-shadow: 0 0 24px var(--glow-cyan), 0 18px 50px rgba(0, 0, 0, 0.22);
+      white-space: pre;
+    }
+
+    .repo {
+      margin: 0;
+      color: var(--accent-cyan);
+      font-family: "Inter", "Noto Sans JP", system-ui, sans-serif;
+      font-size: 40px;
+      line-height: 1.25;
+      font-weight: 700;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 22px;
+      border-top: 1px solid var(--accent-purple);
+      color: var(--text-muted);
+      font: 600 28px/1 "Inter", "Noto Sans JP", system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .brand { color: var(--text-primary); }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="card" aria-label="Knowledge Nexus promotional card">
+    <section class="content">
+      <div class="inner">
+        <img class="character" src="character-clean.png" alt="">
+        <h1>始めるのは<br>1コマンドで十分</h1>
+        <pre class="code-block">$ npm install
+$ npm start</pre>
+        <p class="repo">github.com/EN3Project/knowledge-nexus</p>
+      </div>
+    </section>
+    <footer class="footer">
+      <div class="brand">Knowledge Nexus</div>
+      <div>github.com/EN3Project/knowledge-nexus</div>
+    </footer>
+  </main>
+</body>
+</html>
