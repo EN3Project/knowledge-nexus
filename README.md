@@ -1,20 +1,15 @@
-# nexus-vault-mcp
+# Knowledge Nexus
 
 **あなたのセカンドブレインを、AI ネイティブに。**
 
-Obsidian Vault を [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) 経由で任意の LLM と接続するシステムです。
-Claude、Gemini、Codex など、MCP に対応したクライアントであればどれでも動作します。
+膨大な情報を AI エージェント組織に処理させ、あなたには圧縮されたエッセンスだけを届ける——  
+Obsidian Vault ベースの AI ナレッジ管理システムです。
+
+Claude、Gemini、Codex など、[MCP](https://modelcontextprotocol.io/) 対応の任意の LLM クライアントで動作します。
 
 あなたのノート。あなたの AI。ベンダーロックインなし。
 
 ---
-
-## 特徴
-
-- **LLM 非依存** — Claude Code / Gemini CLI / Codex など主要クライアントに対応
-- **ローカルファースト** — Vault はすべて手元のマシンに保存。外部 API にデータを送信しない
-- **3つのコアツール** — `vault_search`・`vault_read`・`vault_write`
-- **フルシステムテンプレート** — エージェント定義・ワークフロー・メモリプロトコル付属
 
 ## コンセプト
 
@@ -32,11 +27,21 @@ Knowledge Nexus は**知識図書館**であり**情報圧縮装置**です。
 
 ---
 
+## 特徴
+
+- **LLM 非依存** — Claude Code / Gemini CLI / Codex など主要クライアントに対応
+- **ローカルファースト** — Vault はすべて手元のマシンに保存。外部 API にデータを送信しない
+- **6体のエージェントチーム** — 司書・調査員・分析官・査読官・書記官・学芸員が協調して動く
+- **MCP サーバー内蔵** — `vault_search`・`vault_read`・`vault_write` で Vault に直接アクセス
+- **フルシステムテンプレート** — エージェント定義・ワークフロー・メモリプロトコル付属
+
+---
+
 ## 同梱内容
 
 ```
-nexus-vault-mcp/
-├── nexus-vault.js          # MCP サーバー本体
+knowledge-nexus/
+├── nexus-vault.js          # Vault MCP サーバー（LLM と Vault を繋ぐエンジン）
 ├── SYSTEM_MANIFEST.md      # Nexus オーケストレーターのコアルール
 ├── CLAUDE.md               # Claude Code 用エントリーポイント
 ├── AGENTS.md               # Codex 用エントリーポイント
@@ -94,13 +99,9 @@ npm start
 
 ### 4. VaultIndex を初期化
 
-`vault_search` は `VaultIndex.md` を参照します。初回は以下で生成してください。
-
 ```bash
 node 99_System/Scripts/rebuild_vault_index.js
 ```
-
-または LLM に `run` と入力後、`rebuild-index` を実行するよう指示してください。
 
 ---
 
@@ -125,8 +126,6 @@ node 99_System/Scripts/rebuild_vault_index.js
 
 ### Gemini CLI
 
-Gemini CLI の設定ファイルに追加：
-
 ```json
 {
   "mcpServers": {
@@ -137,11 +136,7 @@ Gemini CLI の設定ファイルに追加：
 }
 ```
 
-プロジェクトを開いて `run` と入力すると `GEMINI.md` が読み込まれます。
-
 ### Codex
-
-Codex の MCP 設定に追加：
 
 ```json
 {
@@ -152,42 +147,6 @@ Codex の MCP 設定に追加：
   }
 }
 ```
-
-セッション開始時に `AGENTS.md` が自動で読み込まれます。
-
----
-
-## MCP ツール
-
-| ツール | 説明 |
-|--------|------|
-| `vault_search(query)` | VaultIndex.md を検索して関連ノートの一覧を返す |
-| `vault_read(path)` | 指定パスのノートを全文取得（リポジトリルートからの相対パス） |
-| `vault_write(path, content)` | ノートを新規作成または上書き保存 |
-
-### VaultIndex のフォーマット
-
-`vault_search` は以下の形式で記述された `VaultIndex.md` を読みます：
-
-```markdown
-### index/03_Resources/your-note.md
-- **Tags:** タグ1, タグ2
-- **Summary:** ノートの1行説明
-```
-
----
-
-## Obsidian との連携
-
-1. Obsidian を開く → **フォルダをVaultとして開く** → このリポジトリのルート（または `index/` フォルダ）を選択
-2. LLM が `vault_write` で書き込んだノートは Obsidian に自動で反映されます
-3. フォルダ構造は初回書き込み時に自動生成されます
-
----
-
-## 人格のカスタマイズ
-
-`99_System/Prompts/Personas/` にペルソナファイルを作成し、`SYSTEM_MANIFEST.md` §4 で参照先を変更することで、Nexus に固有の人格を付与できます。作成ガイドは `Persona_Guideline.md` を参照してください。
 
 ---
 
@@ -204,6 +163,16 @@ Codex の MCP 設定に追加：
 
 ---
 
+## Vault MCP サーバー（nexus-vault.js）
+
+Knowledge Nexus の核となるエンジン。LLM と Vault を MCP プロトコルで繋ぎます。
+
+| ツール | 説明 |
+|--------|------|
+| `vault_search(query)` | VaultIndex.md を検索して関連ノートの一覧を返す |
+| `vault_read(path)` | 指定パスのノートを全文取得 |
+| `vault_write(path, content)` | ノートを新規作成または上書き保存 |
+
 ## 環境変数
 
 | 変数 | デフォルト | 説明 |
@@ -217,7 +186,7 @@ Codex の MCP 設定に追加：
 ## 動作要件
 
 - Node.js v18 以上
-- Obsidian Vault（または Markdown ファイルのディレクトリ）
+- Obsidian（または Markdown ファイルを扱えるエディタ）
 - MCP 対応の LLM クライアント（Claude Code / Gemini CLI / Codex など）
 
 ## ライセンス
