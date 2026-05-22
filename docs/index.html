@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Knowledge Nexus</title>
+  <meta name="description" content="Knowledge Nexus - あなたの Obsidian Vault を AI 組織と繋ぐ知識インフラ">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-card: #111827;
+      --bg-card-hover: #1a2333;
+      --accent-purple: #6c63ff;
+      --accent-cyan: #00d4ff;
+      --accent-gold: #f5c56b;
+      --text-primary: #f0f4ff;
+      --text-muted: #8892a4;
+      --border: #1e2d40;
+      --glow-purple: rgba(108, 99, 255, 0.3);
+      --glow-cyan: rgba(0, 212, 255, 0.3);
+      --glow-gold: rgba(245, 197, 107, 0.22);
+      --max-width: 1120px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text-primary);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(0, 212, 255, 0.12), transparent 26rem),
+        radial-gradient(circle at 82% 8%, rgba(245, 197, 107, 0.08), transparent 22rem),
+        linear-gradient(180deg, rgba(10, 14, 26, 0.82), var(--bg-primary) 42%),
+        var(--bg-primary);
+      font-family: "Noto Sans JP", system-ui, sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 72%);
+      pointer-events: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .page {
+      position: relative;
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      min-height: 94vh;
+      place-items: center;
+      padding: 44px 20px 72px;
+      overflow: hidden;
+      text-align: center;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(90deg, rgba(10, 14, 26, 0.18), rgba(10, 14, 26, 0.72) 52%, rgba(10, 14, 26, 0.96)),
+        url("assets/banner.png") center / cover no-repeat;
+      opacity: 0.42;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 170px;
+      z-index: -1;
+      background: linear-gradient(to bottom, transparent, var(--bg-primary));
+    }
+
+    .hero-inner {
+      width: min(100%, 920px);
+      display: grid;
+      justify-items: center;
+      gap: 18px;
+    }
+
+    .character-stage {
+      position: relative;
+      width: min(360px, 78vw);
+      min-height: 300px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 4px;
+    }
+
+    .character-stage::before,
+    .character-stage::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .character-stage::before {
+      inset: 16% 2% 8%;
+      background: radial-gradient(circle, var(--glow-cyan), transparent 62%);
+      filter: blur(14px);
+    }
+
+    .character-stage::after {
+      width: 72%;
+      height: 28px;
+      bottom: 24px;
+      background: radial-gradient(ellipse, rgba(0, 212, 255, 0.28), transparent 70%);
+      filter: blur(8px);
+    }
+
+    .character {
+      position: relative;
+      z-index: 2;
+      width: 280px;
+      animation: float 3s ease-in-out infinite;
+      opacity: 0.98;
+      transform-origin: center;
+      filter: drop-shadow(0 0 24px var(--glow-cyan)) drop-shadow(0 10px 28px rgba(0, 0, 0, 0.45));
+    }
+
+    .particle {
+      position: absolute;
+      z-index: 1;
+      width: 10px;
+      height: 10px;
+      border: 1px solid rgba(0, 212, 255, 0.85);
+      box-shadow: 0 0 18px var(--glow-cyan);
+      transform: rotate(45deg);
+      animation: fadeFloat 4s ease-in-out infinite;
+    }
+
+    .particle::before {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      background: var(--accent-gold);
+      box-shadow: 0 0 12px var(--glow-gold);
+    }
+
+    .p1 { top: 18%; left: 14%; animation-delay: 0s; }
+    .p2 { top: 12%; right: 18%; animation-delay: 0.8s; }
+    .p3 { top: 44%; left: 2%; animation-delay: 1.4s; }
+    .p4 { top: 38%; right: 5%; animation-delay: 2.1s; }
+    .p5 { bottom: 18%; left: 20%; animation-delay: 2.8s; }
+    .p6 { bottom: 20%; right: 16%; animation-delay: 3.3s; }
+
+    h1,
+    h2,
+    h3,
+    .lead,
+    .agent-name,
+    .command-title {
+      font-family: "Inter", "Noto Sans JP", system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(3rem, 9vw, 7.2rem);
+      line-height: 0.95;
+      font-weight: 700;
+      background: linear-gradient(110deg, var(--accent-purple), var(--accent-cyan), var(--accent-gold), var(--accent-purple));
+      background-size: 300% 300%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: gradientShift 4s ease infinite;
+    }
+
+    .lead {
+      margin: 0;
+      font-size: clamp(1.45rem, 3.2vw, 2.55rem);
+      line-height: 1.18;
+      font-weight: 700;
+    }
+
+    .subcopy {
+      margin: 0;
+      max-width: 720px;
+      color: var(--text-muted);
+      font-size: clamp(1rem, 2vw, 1.18rem);
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .badge {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      padding: 7px 12px;
+      background: rgba(17, 24, 39, 0.74);
+      color: var(--text-primary);
+      font: 600 0.84rem/1 "Inter", sans-serif;
+      box-shadow: 0 0 16px rgba(0, 212, 255, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    section {
+      padding: 84px 20px;
+    }
+
+    .section-inner {
+      width: min(100%, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .section-title {
+      margin: 0 0 30px;
+      font-size: clamp(2rem, 4vw, 3.3rem);
+      line-height: 1.12;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .section-title span {
+      background: linear-gradient(100deg, var(--text-primary), var(--accent-cyan));
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .concept-grid,
+    .command-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent), var(--bg-card);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+    }
+
+    .concept-card {
+      padding: 28px;
+    }
+
+    .concept-title {
+      margin: 0 0 14px;
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .diagram {
+      margin: 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid rgba(0, 212, 255, 0.12);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(90deg, rgba(0, 212, 255, 0.04), transparent),
+        #0d1423;
+      color: #dce8ff;
+      font: 600 0.94rem/1.68 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      white-space: pre;
+    }
+
+    .concept-card p {
+      margin: 16px 0 0;
+      color: var(--text-muted);
+    }
+
+    .agents-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .agent-card {
+      position: relative;
+      display: grid;
+      min-height: 100%;
+      overflow: hidden;
+      transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .agent-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(108, 99, 255, 0.55);
+      background-color: var(--bg-card-hover);
+      box-shadow: 0 0 20px var(--glow-purple), 0 18px 54px rgba(0, 0, 0, 0.28);
+    }
+
+    .agent-art {
+      height: 180px;
+      background: radial-gradient(circle at 50% 20%, rgba(0, 212, 255, 0.16), transparent 58%);
+      overflow: hidden;
+    }
+
+    .agent-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center bottom;
+      filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.16));
+      transform: scale(1.22);
+    }
+
+    .agent-body {
+      padding: 20px;
+    }
+
+    .agent-icon {
+      display: inline-grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      margin-bottom: 10px;
+      border-radius: 999px;
+      background: rgba(0, 212, 255, 0.1);
+      box-shadow: inset 0 0 0 1px rgba(0, 212, 255, 0.16);
+      font-size: 1.2rem;
+    }
+
+    .agent-name {
+      margin: 0;
+      font-size: 1.14rem;
+      font-weight: 700;
+      line-height: 1.28;
+    }
+
+    .agent-name span {
+      color: var(--accent-cyan);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .agent-role {
+      margin: 5px 0 12px;
+      color: var(--accent-gold);
+      font-weight: 700;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      margin: 0 0 14px;
+      background: linear-gradient(90deg, var(--accent-purple), transparent);
+    }
+
+    .agent-desc,
+    .command-desc,
+    .flow-label {
+      margin: 0;
+      color: var(--text-muted);
+    }
+
+    .flow-section {
+      position: relative;
+    }
+
+    .flow-section::before {
+      content: "";
+      position: absolute;
+      inset: 44px 0;
+      z-index: -1;
+      background-image: radial-gradient(rgba(0, 212, 255, 0.18) 1px, transparent 1px);
+      background-size: 18px 18px;
+      opacity: 0.45;
+    }
+
+    .flow-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .flow-card {
+      min-height: 138px;
+      padding: 22px 16px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .flow-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .flow-title {
+      margin: 8px 0 2px;
+      font-weight: 700;
+    }
+
+    .flow-arrow {
+      color: var(--accent-cyan);
+      font: 700 2.2rem/1 "Inter", sans-serif;
+      text-shadow: 0 0 18px var(--glow-cyan);
+    }
+
+    .command-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      padding: 24px;
+      align-items: start;
+    }
+
+    .command-icon {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border-radius: var(--radius);
+      background: rgba(245, 197, 107, 0.1);
+      box-shadow: inset 0 0 0 1px rgba(245, 197, 107, 0.18);
+      font-size: 1.45rem;
+    }
+
+    .command-title {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    code {
+      display: inline-block;
+      padding: 4px 8px;
+      border: 1px solid rgba(0, 212, 255, 0.16);
+      border-radius: 6px;
+      background: #1a2333;
+      color: var(--accent-cyan);
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      font-size: 0.95em;
+    }
+
+    footer {
+      padding: 46px 20px 54px;
+      border-top: 1px solid var(--border);
+      background: rgba(5, 8, 16, 0.48);
+      text-align: center;
+    }
+
+    footer p {
+      margin: 6px 0;
+      color: var(--text-muted);
+    }
+
+    footer strong {
+      color: var(--text-primary);
+      font-family: "Inter", sans-serif;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 9px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.76);
+      color: var(--text-primary);
+      font: 600 0.92rem/1 "Inter", sans-serif;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes fadeFloat {
+      0% { opacity: 0; transform: translateY(0) rotate(45deg) scale(0.8); }
+      50% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-40px) rotate(45deg) scale(1.2); }
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @media (max-width: 900px) {
+      .agents-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .flow-row {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-arrow {
+        transform: rotate(90deg);
+        justify-self: center;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .hero {
+        min-height: 92vh;
+        padding-top: 34px;
+      }
+
+      .character-stage {
+        width: min(280px, 82vw);
+        min-height: 230px;
+      }
+
+      .character {
+        width: 200px;
+      }
+
+      section {
+        padding: 62px 16px;
+      }
+
+      .concept-grid,
+      .command-grid,
+      .agents-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .concept-card,
+      .command-card {
+        padding: 20px;
+      }
+
+      .agent-art {
+        height: 160px;
+      }
+
+      .diagram {
+        font-size: 0.82rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero" aria-label="Knowledge Nexus">
+      <div class="hero-inner">
+        <div class="character-stage" aria-hidden="true">
+          <span class="particle p1"></span>
+          <span class="particle p2"></span>
+          <span class="particle p3"></span>
+          <span class="particle p4"></span>
+          <span class="particle p5"></span>
+          <span class="particle p6"></span>
+          <img class="character" src="character-clean.png" alt="">
+        </div>
+        <h1>Knowledge Nexus</h1>
+        <p class="lead">Make your second brain AI-native.</p>
+        <p class="subcopy">あなたの Obsidian Vault を AI 組織と繋ぐ知識インフラ</p>
+        <div class="badges" aria-label="特徴">
+          <span class="badge">🔵 LLM-agnostic</span>
+          <span class="badge">🟣 Local-first</span>
+          <span class="badge">⚡ MCP Standard</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="concept" aria-labelledby="concept-title">
+      <div class="section-inner">
+        <h2 class="section-title" id="concept-title"><span>知識図書館 × 情報圧縮装置</span></h2>
+        <div class="concept-grid">
+          <article class="card concept-card">
+            <h3 class="concept-title">🏛️ 知識図書館</h3>
+            <pre class="diagram">受付（Orchestrator）
+    ↓
+内部エージェント処理
+    ↓
+書庫（Vault）に収蔵
+    ↓
+特別収蔵（Permanent Notes）</pre>
+            <p>受付が入口を管理し、専門エージェントが資料を処理・分類・収蔵する。</p>
+          </article>
+          <article class="card concept-card">
+            <h3 class="concept-title">⚡ 情報圧縮装置</h3>
+            <pre class="diagram">[膨大な生情報]
+    ↓ AI組織が処理
+[圧縮された知見]
+    ↓
+[あなたの判断]</pre>
+            <p>情報の海をAIが泳ぐ。あなたは岸でエッセンスだけ受け取る。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="agents" aria-labelledby="agents-title">
+      <div class="section-inner">
+        <h2 class="section-title" id="agents-title"><span>AI エージェント チーム</span></h2>
+        <div class="agents-grid">
+          <article class="card agent-card">
+            <div class="agent-art"><img src="assets/librarian-clean.png" alt=""></div>
+            <div class="agent-body">
+              <span class="agent-icon">📚</span>
+              <h3 class="agent-name">Librarian <span>@librarian</span></h3>
+              <p class="agent-role">司書・検索</p>
+              <div class="divider"></div>
+              <p class="agent-desc">Vault内の関連知識を瞬時に検索・分類する。</p>
+            </div>
+          </article>
+          <article class="card agent-card">
+            <div class="agent-art"><img src="assets/investigator-clean.png" alt=""></div>
+            <div class="agent-body">
+              <span class="agent-icon">🔍</span>
+              <h3 class="agent-name">Investigator <span>@investigator</span></h3>
+              <p class="agent-role">調査員・外部収集</p>
+              <div class="divider"></div>
+              <p class="agent-desc">図書館にない知識を外部Webから持ち帰る。</p>
+            </div>
+          </article>
+          <article class="card agent-card">
+            <div class="agent-art"><img src="assets/analyst-clean.png" alt=""></div>
+            <div class="agent-body">
+              <span class="agent-icon">🧠</span>
+              <h3 class="agent-name">Analyst <span>@analyst</span></h3>
+              <p class="agent-role">分析官・構造化</p>
+              <div class="divider"></div>
+              <p class="agent-desc">情報を統合し、パターンと論理構造を抽出する。</p>
+            </div>
+          </article>
+          <article class="card agent-card">
+            <div class="agent-art"><img src="assets/critic-clean.png" alt=""></div>
+            <div class="agent-body">
+              <span class="agent-icon">⚖️</span>
+              <h3 class="agent-name">Critic <span>@critic</span></h3>
+              <p class="agent-role">査読官・品質管理</p>
+              <div class="divider"></div>
+              <p class="agent-desc">ハルシネーションと論理の飛躍を検証する。</p>
+            </div>
+          </article>
+          <article class="card agent-card">
+            <div class="agent-art"><img src="assets/scribe-clean.png" alt=""></div>
+            <div class="agent-body">
+              <span class="agent-icon">✍️</span>
+              <h3 class="agent-name">Scribe <span>@scribe</span></h3>
+              <p class="agent-role">書記官・記録</p>
+              <div class="divider"></div>
+              <p class="agent-desc">知見をObsidian互換Markdownで整形・保存する。</p>
+            </div>
+          </article>
+          <article class="card agent-card">
+            <div class="agent-art"><img src="assets/curator-clean.png" alt=""></div>
+            <div class="agent-body">
+              <span class="agent-icon">🗂️</span>
+              <h3 class="agent-name">Curator <span>@curator</span></h3>
+              <p class="agent-role">学芸員・保守</p>
+              <div class="divider"></div>
+              <p class="agent-desc">ノート間のリンクを維持し、知識の鮮度を管理する。</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="flow-section" aria-labelledby="flow-title">
+      <div class="section-inner">
+        <h2 class="section-title" id="flow-title"><span>情報はこう流れる</span></h2>
+        <div class="flow-row" aria-label="情報フロー">
+          <article class="card flow-card">
+            <div class="flow-icon">📥</div>
+            <p class="flow-title">生情報</p>
+            <p class="flow-label">Clippings</p>
+          </article>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <article class="card flow-card">
+            <div class="flow-icon">🤖</div>
+            <p class="flow-title">AI組織</p>
+            <p class="flow-label">6エージェント</p>
+          </article>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <article class="card flow-card">
+            <div class="flow-icon">💎</div>
+            <p class="flow-title">圧縮エッセンス</p>
+            <p class="flow-label">Synthesis Digest</p>
+          </article>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <article class="card flow-card">
+            <div class="flow-icon">🧑</div>
+            <p class="flow-title">あなたの判断</p>
+            <p class="flow-label">意思決定・行動</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="commands" aria-labelledby="commands-title">
+      <div class="section-inner">
+        <h2 class="section-title" id="commands-title"><span>コマンドで動かす</span></h2>
+        <div class="command-grid">
+          <article class="card command-card">
+            <span class="command-icon">🚀</span>
+            <div>
+              <h3 class="command-title"><code>run</code></h3>
+              <p class="command-desc">Nexus を起動。記憶と人格を復元する。</p>
+            </div>
+          </article>
+          <article class="card command-card">
+            <span class="command-icon">🔮</span>
+            <div>
+              <h3 class="command-title"><code>synthesize</code></h3>
+              <p class="command-desc">Vault を横断合成。洞察ベスト3・知識ギャップを出力。</p>
+            </div>
+          </article>
+          <article class="card command-card">
+            <span class="command-icon">💎</span>
+            <div>
+              <h3 class="command-title"><code>crystallize</code></h3>
+              <p class="command-desc">重要な決定・知識を長期記憶として保存。</p>
+            </div>
+          </article>
+          <article class="card command-card">
+            <span class="command-icon">🔬</span>
+            <div>
+              <h3 class="command-title"><code>standardresearch</code></h3>
+              <p class="command-desc">調査系の指示で自動発動。5フェーズで深掘りする。</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Knowledge Nexus</strong> — Your second brain, AI-native.</p>
+    <p>Built with Obsidian + MCP + Claude / Gemini / Codex</p>
+    <a class="github-link" href="#" aria-label="GitHub link placeholder">GitHub リンクプレースホルダー</a>
+  </footer>
+</body>
+</html>
