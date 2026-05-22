@@ -175,7 +175,7 @@ node 99_System/Scripts/rebuild_vault_index.js
 | コマンド | 説明 |
 |----------|------|
 | `crystallize` / `結晶化` | 重要な決定・知識・ユーザー嗜好を長期記憶として保存する |
-| `condense` / `圧縮` | 長い会話を別 LLM へ引き継げる短い要約に圧縮する（ファイル保存なし） |
+| `condense` / `圧縮` | 会話の現在状態を構造化して確認する。別 LLM への引き継ぎにも使える（ファイル保存なし） |
 | `handoff` / `引き継ぎ` | 短期作業文脈を `99_System/Handoff/CURRENT_CONTEXT.md` に保存する |
 | `clear-handoff` / `引き継ぎ破棄` | `CURRENT_CONTEXT.md` を削除する |
 | `prune-memory` / `記憶整理` | Memory の重複・陳腐化・矛盾を検出・整理する |
