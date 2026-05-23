@@ -16,3 +16,43 @@
 
 ---
 *このファイルは Codex 用の入り口です。コアロジックの変更は `SYSTEM_MANIFEST.md` で行ってください。*
+
+---
+
+## Multi-Agent Policy
+
+Spawn subagents only when the user explicitly requests parallel or delegated
+work ("use multiple agents", "run in parallel", "delegate to subagents"), or
+when the task structure clearly benefits from independent parallel execution.
+
+Do not spawn subagents just because the task is large.
+
+## Available Agents
+
+Core definitions: `99_System/Prompts/Roles/Library/`
+
+| Agent | Role | Use when |
+|---|---|---|
+| `@librarian` | Vault 内検索・分類提案 | 既存ノートを探す・格納先を決める |
+| `@investigator` | 外部 Web 調査・収集 | Vault にない情報が必要 |
+| `@analyst` | 情報統合・構造設計 | 複数ソースを合成してノート設計図を作る |
+| `@critic` | 品質査読・合否判定 | 成果物を保存前にチェックする |
+| `@scribe` | 整形・Vault 保存 | Critic PASS 後のファイル書き出し |
+| `@curator` | Vault メンテナンス | タグ揺れ・リンク切れ・放置ノートの整理 |
+
+## Standard Research Flow
+
+```
+@librarian → @investigator → @analyst → @critic → @scribe
+```
+
+## Parallel Execution
+
+Run agents in parallel only when their subtasks are **independent** and have
+**disjoint scope**. Workers must not overwrite each other's changes.
+
+## Platform Notes
+
+- **Gemini**: `.gemini/agents/` — dispatch via `@agent-name`
+- **Claude Code**: `.claude/agents/` — dispatch via Agent tool
+- **Codex**: Use this file as working policy. Spawn when user explicitly requests multi-agent work.
