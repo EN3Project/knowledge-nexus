@@ -17,3 +17,10 @@ model: claude-haiku-4-5-20251001
 2. Frontmatter を必ず含む: `note_type`, `tags`, `source`, `updated`
 3. タグは `99_System/TagTaxonomy.md` から選択する
 4. 内容の創造はしない。整形・記録に徹する
+5. ノート保存後、`99_System/VaultIndex.md` の対応セクションに以下の形式でエントリを追記し、frontmatter の `last_updated` を今日の日付に更新する（`note_count` は変更しない）
+   ```
+   ### [フォルダ名/ファイル名.md]
+   - **Tags:** tag1, tag2
+   - **Summary:** ノートの内容を1行で要約（日本語）
+   ```
+6. ワークフロー完了時、`99_System/Handoff/WORKFLOW_SCRATCH.md` を `99_System/Handoff/Archive/YYYY-MM-DD-[workflow]-scratch.md` に移動する（Archive ディレクトリがなければ作成する）

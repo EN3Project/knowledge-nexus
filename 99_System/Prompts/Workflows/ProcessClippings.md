@@ -16,12 +16,13 @@
 
 ### Phase 2: 分類・抽出（@analyst、ファイルごとに dispatch）
 
-各ファイルを @analyst に dispatch して分類・抽出する。
+Phase 1 完了後に Nexus が `99_System/Handoff/WORKFLOW_SCRATCH.md` を作成する。各ファイルを @analyst に dispatch して分類・抽出する。
 
 ```
 タスク: 以下のクリッピングを読み、分類と知識抽出を行う
 対象ファイル: [Clippings/ファイル名.md]
 出力: 分類（Knowledge/Project Idea/Permanent/Discard）+ 抽出ノート本文（Discard 以外）
+完了後: WORKFLOW_SCRATCH.md の ## Phase 2 セクションに「ファイル名 | 分類 | 抽出ノート本文（要約）」を1件追記すること
 ```
 
 分類基準：
@@ -68,12 +69,11 @@ tags: [タグ1, タグ2]       # 下記タグ付けルールに従う
 @scribe に dispatch して抽出ノートの保存と原本のアーカイブを実行する。
 
 ```
-タスク: 以下の抽出ノートを保存し、原本をアーカイブする
-保存内容: [Phase 2 の抽出ノート本文]
-保存先: [分類に応じたパス]
-アーカイブ元: Clippings/[ファイル名.md]
-アーカイブ先: index/00_Inbox/Archive/[ファイル名.md]
-出力: 保存パスとアーカイブ完了を報告する
+前提: WORKFLOW_SCRATCH.md を読み、## Phase 2 の全件（ファイル名・分類・抽出ノート）を参照すること
+タスク: 抽出ノートを保存し、原本をアーカイブする（Discard は確認済みのもののみ）
+保存先: 分類に応じたパス（Knowledge → 03_Resources / Permanent → 03_Resources/Permanent / Project Idea → 01_Projects）
+アーカイブ先: index/00_Inbox/Archive/
+完了後: ① ノート保存 + VaultIndex.md 更新（Discard 以外）② 原本アーカイブ ③ WORKFLOW_SCRATCH.md を 99_System/Handoff/Archive/YYYY-MM-DD-ProcessClippings-scratch.md に移動 ④ 保存パスとアーカイブ完了を報告
 ```
 
 ### Phase 4: 報告

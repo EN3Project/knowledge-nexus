@@ -5,6 +5,38 @@
 ## Files
 
 - `CURRENT_CONTEXT.md`: `handoff / 引き継ぎ` コマンドで生成される現在の短期作業文脈。
+- `WORKFLOW_SCRATCH.md`: ワークフロー実行中のエージェント間共有メモ。ワークフロー開始時に Nexus が作成し、各フェーズのエージェントが前フェーズ出力を参照・自フェーズ出力を追記する。完了後は `Archive/` に移動する。
+- `Archive/`: 完了済みの `WORKFLOW_SCRATCH` を `YYYY-MM-DD-[workflow]-scratch.md` 形式で保存する。
+
+## WORKFLOW_SCRATCH フォーマット
+
+```md
+---
+workflow: [ワークフロー名]
+topic: [トピックまたは対象]
+started: YYYY-MM-DD
+status: in-progress
+---
+
+# WORKFLOW_SCRATCH: [ワークフロー名]
+
+## Phase 1: [フェーズ名]
+[Nexus または担当エージェントが記入]
+
+## Phase 2: [フェーズ名]
+[担当エージェントが記入]
+
+...
+```
+
+## WORKFLOW_SCRATCH 運用ルール
+
+- ワークフロー開始時に Nexus がファイルを作成し、全セクションのヘッダーを事前に設置する。
+- 各 dispatch エージェントは **ブリーフィングを受け取る前に** `WORKFLOW_SCRATCH.md` を読み、前フェーズの出力を参照する。
+- 自フェーズの出力は対応するセクションに追記してから、Nexus に「完了」を報告する。
+- 並列 dispatch 時（例: Phase 1 + Phase 2 同時）は異なるセクションに書くため競合しない。
+- ワークフロー完了後は @scribe が `Archive/YYYY-MM-DD-[workflow]-scratch.md` に移動する。
+- 同時に実行できるワークフローは1つ。既存 `WORKFLOW_SCRATCH.md` がある場合は完了または中断を確認してから上書きする。
 
 ## Rules
 

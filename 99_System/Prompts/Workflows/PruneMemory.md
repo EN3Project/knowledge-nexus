@@ -12,7 +12,7 @@
 
 ## Dispatch Protocol
 
-- **Step 1-4（スキャン・分類）**: @curator に dispatch する。Memory の読み込み・照合・問題分類を委任する。
+- **Step 1-4（スキャン・分類）**: @curator に dispatch する。Memory の読み込み・照合・問題分類を委任する。ワークフロー開始時に Nexus が `99_System/Handoff/WORKFLOW_SCRATCH.md` を作成する。
 - **Step 5（更新案）**: Nexus が @curator の報告をもとに INDEX.md 更新案を整理・提示する。
 - **Step 6（確認）**: Nexus がユーザー確認を取る。
 - **Step 7（実行）**: @scribe に dispatch して承認済みの変更を実行する。
@@ -24,14 +24,15 @@
    タスク: 99_System/Memory/ の全 Memory ファイルを点検し、問題を分類して報告する
    照合対象: INDEX.md + Memory/ 直下の全ファイル
    出力: Classification に従った問題リスト（ファイルパスと理由を明示）
+   完了後: WORKFLOW_SCRATCH.md の ## Step 1-4 セクションに問題リストを追記すること
    ```
 5. Nexus が @curator の報告をもとに `INDEX.md` 更新案を整理してユーザーに提示する。
 6. 削除、Archive 移動、Permanent note 変更が必要な場合は、実行前にユーザー確認を取る。
 7. 承認後、@scribe に dispatch して変更を実行する。
    ```
-   タスク: 以下の承認済み変更を実行する
-   変更内容: [確認済みの変更リスト]
-   出力: 実行した変更と保留事項を報告する
+   前提: WORKFLOW_SCRATCH.md を読み、## Step 1-4 の問題リストと承認済み変更を参照すること
+   タスク: 承認済み変更を実行する
+   完了後: ① 変更実行 ② WORKFLOW_SCRATCH.md を 99_System/Handoff/Archive/YYYY-MM-DD-PruneMemory-scratch.md に移動 ③ 実行した変更と保留事項を報告
    ```
 
 ## Classification
