@@ -172,4 +172,4 @@ AI技術の情報収集に使っている時間の多くが、そのまま知識
 
 https://github.com/EN3Project/knowledge-nexus
 
-MIT ライセンス。Obsidian と MCP クライアントがあれば動く。
+MIT + Commons Clause ライセンス。商用販売は不可だが、個人・業務利用は自由。Obsidian と MCP クライアントがあれば動く。
