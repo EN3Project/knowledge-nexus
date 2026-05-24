@@ -8,6 +8,7 @@
     "start": "node nexus-vault.js"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.29.0"
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zenn-cli": "^0.4.8"
   }
 }
