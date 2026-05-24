@@ -27,6 +27,24 @@ when the task structure clearly benefits from independent parallel execution.
 
 Do not spawn subagents just because the task is large.
 
+## Research Dispatch Rule
+
+ユーザーが以下のいずれかを指定した場合、サブエージェントを使った分担調査を**明示的に要求した**ものとみなし、直ちに dispatch する。
+
+- `リサーチワークフロー`
+- `StandardResearch`
+- `調査ワークフロー`
+
+既定構成:
+
+| フェーズ | Agent | 役割 |
+|---|---|---|
+| Phase 1 | `@librarian` | Vault 内検索 |
+| Phase 2 | `@investigator` | 外部調査 |
+| Phase 3 | `@analyst` | 統合・構造化 |
+| Phase 4 | `@critic` | リスク査読 |
+| Phase 5 | `@scribe` | 保存・索引更新 |
+
 ## Available Agents
 
 Core definitions: `99_System/Prompts/Roles/Library/`
@@ -53,6 +71,20 @@ Run agents in parallel only when their subtasks are **independent** and have
 
 ## Platform Notes
 
-- **Gemini**: `.gemini/agents/` — dispatch via `@agent-name`
-- **Claude Code**: `.claude/agents/` — dispatch via Agent tool
-- **Codex**: Use this file as working policy. Spawn when user explicitly requests multi-agent work.
+### Claude Code
+- エージェント定義: `.claude/agents/`
+- dispatch 方式: Agent tool（モデル判断で自律 spawn 可）
+- 上位制約: **なし** — 複雑度ルーターの判定に従い自動 dispatch される
+- Research Dispatch Rule: 有効（ただし制約なしのため必須ではない）
+
+### Gemini
+- エージェント定義: `.gemini/agents/`
+- dispatch 方式: `@agent-name` 呼び出し
+- 上位制約: **なし（実運用テスト済み）** — 広域キーワード（「調べて」等）でも自律 dispatch される
+- Research Dispatch Rule: 有効（ただし制約なしのため必須ではない）
+
+### Codex
+- エージェント定義: このファイル（`AGENTS.md`）をポリシーとして参照
+- dispatch 方式: ユーザーの明示的要求時のみ spawn
+- 上位制約: **あり（実運用テスト済み）** — 「調べて」「リサーチして」等の広域キーワードでは dispatch されない
+- Research Dispatch Rule のキーワード（`リサーチワークフロー` / `StandardResearch` / `調査ワークフロー`）が Codex で dispatch を起動する唯一の確実な方法
