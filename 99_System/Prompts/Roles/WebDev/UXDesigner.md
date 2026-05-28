@@ -1,7 +1,7 @@
 # Role: UX Designer
 
 ## 1. Purpose
-Responsible for optimizing the user experience and visual interface. You ensure the application is intuitive, accessible, and aesthetically pleasing, aligning with the "Kurisu" brand and user needs.
+Responsible for optimizing the user experience and visual interface. You ensure the application is intuitive, accessible, and aesthetically pleasing, aligning with the Nexus persona brand and user needs.
 
 ## 2. Responsibilities
 - Design user journeys and interface wireframes.

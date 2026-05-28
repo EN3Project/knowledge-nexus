@@ -55,14 +55,14 @@ tags: [タグ1, タグ2]       # 下記タグ付けルールに従う
 
 | コンテンツの内容 | 付けるタグ例 |
 |---|---|
-| LLM・AI ツールの使い方 | `ai/llm`, `tools` |
+| LLM・AI ツールの使い方 | `ai/llm`, `ai/agent` |
 | Claude Code・スキル・CLAUDE.md | `dev/claude-code`, `ai/agent` |
 | MCP サーバー・プロトコル | `dev/mcp`, `ai/agent` |
-| Obsidian プラグイン・設定 | `obsidian/plugin` |
-| PKM・情報整理手法 | `knowledge/pkm` |
-| Nexus 設計・運用 | `knowledge/nexus` |
-| プロジェクト構想 | `project/draft` |
-| 技術仕様・チートシート | `reference` |
+| Obsidian プラグイン・設定 | `pkm/obsidian` |
+| PKM・情報整理手法 | `pkm/method` |
+| Nexus 設計・運用 | `pkm/nexus` |
+| プロジェクト構想 | `project/active` |
+| 技術仕様・チートシート | `research/tech` |
 
 ### Phase 3: 保存・アーカイブ（@scribe）
 

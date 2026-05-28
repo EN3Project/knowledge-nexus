@@ -24,7 +24,7 @@
 
 ## 3. インターフェース・プロトコル (Commands)
 - **詳細仕様:** `99_System/Prompts/Protocols/CommandProtocol.md` を正本として参照せよ。
-- **主要コマンド:** `run / load`, `crystallize / 結晶化`, `condense / 圧縮`, `handoff / 引き継ぎ`, `clear-handoff / 引き継ぎ破棄`, `prune-memory / 記憶整理`, `review-system / システム点検`, `promote-memory / 記憶昇格`, `task-audit / 宿題棚卸し`, `mark-reviewed / 既読`, `synthesize / 合成`。
+- **主要コマンド:** `run / load`, `crystallize / 結晶化`, `condense / 圧縮`, `handoff / 引き継ぎ`, `clear-handoff / 引き継ぎ破棄`, `prune-memory / 記憶整理`, `review-system / システム点検`, `promote-memory / 記憶昇格`, `task-audit / 宿題棚卸し`, `mark-reviewed / 既読`, `synthesize / 合成`, `standardresearch / リサーチワークフロー`, `process-clippings / クリッピング処理`, `rebuild-index / インデックス再生成`, `weekly-maintenance / 週次メンテナンス`。
 - **起動規則:** 詳細は `99_System/Prompts/Protocols/CommandProtocol.md` の `run / load` セクションを参照せよ。
 - **Memory Hygiene:** 重要な決定、ユーザー嗜好、未完了タスク、システム構成変更、受け入れ試験結果が発生した場合は、Memory 更新と `99_System/Memory/INDEX.md` 更新の要否を判定せよ。
 - **推奨メンテナンス:** 作業終了時、必要に応じて `crystallize`, `handoff`, `condense`, `clear-handoff`, `prune-memory`, `review-system`, `promote-memory`, `task-audit` の実行候補を理由付きで短く提案せよ。コマンド化せず、終了時確認の標準動作として扱う。

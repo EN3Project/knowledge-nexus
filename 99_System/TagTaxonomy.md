@@ -14,6 +14,7 @@
 
 ## 開発
 - `dev/mcp` — Model Context Protocol
+- `dev/claude-code` — Claude Code・CLAUDE.md・スキル設定
 - `dev/api` — API 設計・実装
 - `dev/frontend` — フロントエンド
 - `dev/backend` — バックエンド
@@ -29,6 +30,7 @@
 - `pkm/method` — 知識管理の方法論
 - `pkm/obsidian` — Obsidian 固有の設定・プラグイン
 - `pkm/workflow` — 運用ワークフロー
+- `pkm/nexus` — Knowledge Nexus の設計・運用
 
 ## リサーチ
 - `research/tech` — 技術調査

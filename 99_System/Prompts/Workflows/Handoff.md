@@ -15,7 +15,7 @@
 ## Procedure
 
 1. `condense` と同じ手順で会話コンテキストを圧縮する。
-2. 固定出力形式（`# Condensed Context` 見出し、10セクション）で内容を生成する。
+2. 固定出力形式（`# Condensed Context` 見出し、11セクション）で内容を生成する。
 3. `99_System/Handoff/CURRENT_CONTEXT.md` に書き出す（既存ファイルは上書き）。
 4. 保存完了をユーザーに通知する。
 
@@ -39,6 +39,8 @@
 ## 次アクション
 
 ## 参照
+
+## audit_trail
 
 ## decision_rationale
 

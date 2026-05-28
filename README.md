@@ -51,6 +51,7 @@ knowledge-nexus/
 ├── 99_System/
 │   ├── Memory/             # セッション記憶・長期記憶インデックス
 │   ├── Handoff/            # 短期作業文脈の引き継ぎバッファ
+│   ├── Tests/              # 受け入れ試験・品質評価（QualityGoldenSet テンプレート含む）
 │   └── Prompts/
 │       ├── Personas/       # 人格テンプレート（カスタマイズ推奨）
 │       ├── Protocols/      # コマンド仕様
