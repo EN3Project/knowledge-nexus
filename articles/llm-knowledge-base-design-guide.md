@@ -3,7 +3,7 @@ title: "LLM知識ベース：前提条件で選ぶ4手法の設計ガイド"
 emoji: "🗂"
 type: "tech"
 topics: ["RAG", "LLMWiki", "knowledgebase", "Obsidian", "PKM"]
-published: false
+published: true
 ---
 
 対象読者: Obsidian 等で情報管理をしていて、LLM に賢く検索させたいエンジニア・個人開発者
