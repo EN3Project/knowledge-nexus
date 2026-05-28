@@ -1,5 +1,8 @@
 # Knowledge Nexus
 
+> **汎用テンプレートをお探しの方は → [knowledge-nexus-template](https://github.com/EN3Project/knowledge-nexus-template)**
+> このリポジトリは開発ログ・Zenn 記事アーカイブとして維持しています。
+
 **あなたのセカンドブレインを、AI ネイティブに。**
 
 膨大な情報を AI エージェント組織に処理させ、あなたには圧縮されたエッセンスだけを届ける——  
